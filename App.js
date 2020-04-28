@@ -1,24 +1,58 @@
-import React from 'react';
-import { StyleSheet, Text, View, TextInput, Button } from 'react-native';
+import React, { useState } from 'react';
+import { StyleSheet, Text, View, TextInput, Button, ScrollView } from 'react-native';
 
 export default function App() {
+  const [enteredGoal, setEnteredGoal] = useState('');
+  const [goals, setGoals] = useState([]);
+
+  const goalInputHandler = (enteredText) => {
+    setEnteredGoal(enteredText);
+  };
+
+  const addGoalHandler = () => {
+    setGoals(currentGoals => [...currentGoals, enteredGoal]);
+  };
+
   return (
 
-    <View style={{ padding: 30 }} >
+    <View style={styles.screen} >
 
-      <View>
-        <TextInput placeholder="Ziel" style={{ borderBottomColor: 'black', borderBottomWidth: 1 }} />
-        <Button title="ADD" />
+      <View style={styles.inputContainer} >
+        <TextInput placeholder="Ziel" style={styles.input} onChangeText={goalInputHandler}
+          value={enteredGoal}
+        />
+        <Button title="ADD" onPress={addGoalHandler} />
       </View>
 
-      <View>
-
-      </View>
+      <ScrollView>
+        {goals.map(goal => (<View key={goal} style={styles.listItem}>
+          <Text>{goal}</Text></View>))}
+      </ScrollView>
 
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+  screen: {
+    padding: 30,
+    marginTop: '5 %',
+    marginBottom: '-5%',
+  },
+  inputContainer: {
+    flexDirection: 'row', justifyContent: 'space-between', margin: 10, alignItems: 'center'
+  },
+
+  input: {
+    width: '75%', borderColor: 'black', borderWidth: 1, padding: 6,
+  },
+
+  listItem: {
+    padding: 10,
+    marginVertical: 10,
+    backgroundColor: '#ccc',
+    borderColor: 'black',
+    borderWidth: 1
+  },
 
 });
