@@ -10,14 +10,14 @@ export default function App() {
 
 
   const addGoalHandler = goalTitle => {
-    setGoals(currentGoals => [...currentGoals, { id: Math.random().toString(), value: goalTitle }
+    setGoals(currentGoals => [...currentGoals, { key: Math.random().toString(), value: goalTitle }
     ]);
     setIsAddMode(false);
   };
 
   const removeGoalHandler = goalId => {
     setGoals(currentGoals => {
-      return currentGoals.filter((goal) => goal.id !== goalId);
+      return currentGoals.filter((goal) => goal.key !== goalId);
     });
   }
 
@@ -32,7 +32,7 @@ export default function App() {
       <GoalInput visible={isAddMode} onAddGoal={addGoalHandler} onCancel={cancelGoalAdditionHandler} />
       <FlatList keyExtractor={(item, index) => item.key}
         data={goals} renderItem={itemData =>
-          <GoalItem id={itemData.item.id}
+          <GoalItem id={itemData.item.key}
             onDelete={removeGoalHandler}
             title={itemData.item.value} />}
       />
@@ -46,6 +46,7 @@ const styles = StyleSheet.create({
     padding: 30,
     marginTop: '5 %',
     marginBottom: '-5%',
+    height: '100%'
   },
 });
 
