@@ -1,23 +1,39 @@
 import React, { useState } from 'react';
-import { View, TextInput, Button, StyleSheet, Modal } from 'react-native';
+import { View, TextInput, Button, StyleSheet, Modal, Text } from 'react-native';
+import renderIf from './renderIf'
+
 
 const GoalInput = props => {
     const [enteredGoal, setEnteredGoal] = useState('');
+
+    const [isFailure, setIsFailure] = useState(false);
 
     const goalInputHandler = (enteredText) => {
         setEnteredGoal(enteredText);
     };
 
     const addGoalHandler = () => {
-        props.onAddGoal(enteredGoal);
-        setEnteredGoal('');
+        if (enteredGoal !== '') {
+            props.onAddGoal(enteredGoal);
+            setEnteredGoal('');
+        }
+        else {
+            setIsFailure(false);
+        }
+
     }
+
+
 
     return (
         <Modal visible={props.visible} animationType="slide">
             <View style={styles.inputContainer} >
                 <TextInput placeholder="Ziel" style={styles.input} onChangeText={goalInputHandler}
                     value={enteredGoal} />
+                {renderIf(isFailure)(
+                    <Text>Please add Text</Text>
+                )}
+
                 <View style={styles.buttonContainer}>
                     <View style={styles.button}><Button title="CANCEL" color="red" onPress={props.onCancel} /></View>
                     <View style={styles.button}><Button title="ADD" onPress={addGoalHandler} /></View>
